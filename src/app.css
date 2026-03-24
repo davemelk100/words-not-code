@@ -1,0 +1,120 @@
+@import 'tailwindcss';
+
+@theme {
+	/* Gold accent scale */
+	--color-gold-50: #fdf9ef;
+	--color-gold-100: #f9f0d4;
+	--color-gold-200: #f2dfa8;
+	--color-gold-300: #e9c96c;
+	--color-gold-400: #e2b440;
+	--color-gold-500: #d4982a;
+	--color-gold-600: #bc7820;
+	--color-gold-700: #9c591d;
+	--color-gold-800: #80471f;
+	--color-gold-900: #6a3b1d;
+
+	/* Dark backgrounds */
+	--color-dark-950: #0a0a0f;
+	--color-dark-900: #111118;
+	--color-dark-800: #1a1a24;
+	--color-dark-700: #252532;
+	--color-dark-600: #33334a;
+
+	/* Off-white text */
+	--color-cream-50: #fafaf5;
+	--color-cream-100: #f0efe6;
+	--color-cream-200: #e0dfd0;
+	--color-cream-300: #c9c7b4;
+
+	/* Success green */
+	--color-success-400: #4ade80;
+	--color-success-500: #22c55e;
+	--color-success-600: #16a34a;
+
+	/* Fonts */
+	--font-serif: 'Cormorant Garamond', Georgia, serif;
+	--font-sans: 'Instrument Sans', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: var(--font-sans);
+	color: var(--color-cream-50);
+	background-color: var(--color-dark-950);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+	font-size: max(18px, 1rem);
+}
+
+::selection {
+	background-color: var(--color-gold-500);
+	color: var(--color-dark-950);
+}
+
+/* Focus visible outlines */
+:focus-visible {
+	outline: 2px solid var(--color-gold-400);
+	outline-offset: 2px;
+}
+
+/* Slide gradient utility */
+.slide-gradient {
+	transition: background 0.6s ease, opacity 0.6s ease;
+}
+
+/* Stagger animations for slides */
+@keyframes stagger-fade-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes stagger-scale-in {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+.stagger-item {
+	animation: stagger-fade-in 0.4s ease both;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-item:nth-child(2) { animation-delay: 80ms; }
+.stagger-item:nth-child(3) { animation-delay: 160ms; }
+.stagger-item:nth-child(4) { animation-delay: 240ms; }
+.stagger-item:nth-child(5) { animation-delay: 320ms; }
+.stagger-item:nth-child(6) { animation-delay: 400ms; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
