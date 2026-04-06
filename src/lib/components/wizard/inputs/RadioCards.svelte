@@ -49,7 +49,7 @@
 <!-- svelte-ignore a11y_interactive_supports_focus -->
 <div
 	role="radiogroup"
-	class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+	class="flex flex-wrap justify-center gap-4"
 	onkeydown={handleKeyDown}
 >
 	{#each options as option, i}
@@ -60,7 +60,7 @@
 			role="radio"
 			aria-checked={isSelected}
 			tabindex={focusedIndex === i ? 0 : -1}
-			class="relative rounded-xl p-5 border text-left transition-all duration-200 ease-in-out min-h-[44px] cursor-pointer
+			class="relative flex flex-col items-center rounded-xl p-5 border text-center transition-all duration-200 ease-in-out min-h-[44px] w-[calc(33.333%-1rem)] min-w-[140px] cursor-pointer
 				{isSelected
 				? 'border-transparent border-b-gold-400 bg-dark-700 shadow-[0_0_16px_rgba(226,180,64,0.15)]'
 				: 'border-dark-600 bg-dark-800'}
@@ -80,10 +80,10 @@
 			{/if}
 
 			{#if option.icon}
-				<div class="text-2xl mb-2">{option.icon}</div>
+				<div class="text-5xl mb-3">{option.icon}</div>
 			{/if}
 
-			<div class="font-medium text-cream-50 text-sm md:text-base pr-6">
+			<div class="font-medium text-cream-50 text-sm md:text-base">
 				{option.label}
 			</div>
 

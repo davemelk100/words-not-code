@@ -2,7 +2,7 @@ import { getVisibleQuestions } from './questions';
 import type { Answers } from './types';
 
 let answers = $state<Answers>({});
-let currentStep = $state(0);
+let currentStep = $state(1);
 let direction = $state<1 | -1>(1);
 
 let visibleQuestions = $derived(getVisibleQuestions(answers));
@@ -11,7 +11,7 @@ let progress = $derived(currentStep <= 0 ? 0 : Math.min(currentStep / totalSteps
 let currentQuestion = $derived(
 	currentStep > 0 && currentStep <= totalSteps ? visibleQuestions[currentStep - 1] : null
 );
-let isFirstStep = $derived(currentStep <= 0);
+let isFirstStep = $derived(currentStep <= 1);
 let isLastQuestion = $derived(currentStep >= totalSteps);
 let isOutputSlide = $derived(currentStep > totalSteps);
 
@@ -60,19 +60,19 @@ export const wizardStore = {
 
 	prevStep() {
 		direction = -1;
-		if (currentStep > 0) {
+		if (currentStep > 1) {
 			currentStep--;
 		}
 	},
 
 	goToStep(step: number) {
 		direction = step > currentStep ? 1 : -1;
-		currentStep = Math.max(0, Math.min(step, totalSteps + 1));
+		currentStep = Math.max(1, Math.min(step, totalSteps + 1));
 	},
 
 	reset() {
 		answers = {};
-		currentStep = 0;
+		currentStep = 1;
 		direction = 1;
 	}
 };

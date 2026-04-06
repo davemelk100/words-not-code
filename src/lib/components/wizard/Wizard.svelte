@@ -1,32 +1,42 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { wizardStore } from '$lib/wizard-store.svelte';
-	import HeroSlide from './HeroSlide.svelte';
 	import Slide from './Slide.svelte';
 	import OutputSlide from './OutputSlide.svelte';
-	import ProgressBar from '$lib/components/ui/ProgressBar.svelte';
-	import NavButtons from '$lib/components/ui/NavButtons.svelte';
 	import CustomCursor from '$lib/components/ui/CustomCursor.svelte';
 
-	let lastWheelTime = $state(0);
-	let touchStartY = $state(0);
 	let announceText = $state('');
+	let scrollContainer: HTMLDivElement | undefined = $state();
 
-	let showQuestionSlide = $derived(
-		wizardStore.currentStep > 0 && !wizardStore.isOutputSlide
-	);
-	let showHero = $derived(wizardStore.currentStep === 0);
 	let showOutput = $derived(wizardStore.isOutputSlide);
-	let showNav = $derived(showQuestionSlide);
 
-	function handleNext() {
+	// All questions visible so far (up to currentStep)
+	let visitedQuestions = $derived(
+		wizardStore.visibleQuestions.slice(0, wizardStore.currentStep)
+	);
+
+	async function handleNext() {
 		wizardStore.nextStep();
 		updateAnnouncement();
+		await tick();
+		scrollToCurrentStep();
 	}
 
 	function handlePrev() {
 		wizardStore.prevStep();
 		updateAnnouncement();
+		scrollToCurrentStep();
+	}
+
+	function scrollToCurrentStep() {
+		if (!scrollContainer) return;
+		const selector = wizardStore.isOutputSlide
+			? '[data-step="output"]'
+			: `[data-step="${wizardStore.currentStep}"]`;
+		const target = scrollContainer.querySelector(selector);
+		if (target) {
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		}
 	}
 
 	function updateAnnouncement() {
@@ -37,44 +47,14 @@
 		}
 	}
 
-	function handleKeyDown(e: KeyboardEvent) {
-		// Don't intercept when user is typing in an input/textarea
-		const tag = (e.target as HTMLElement)?.tagName;
-		if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
-
-		if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
-			e.preventDefault();
-			handleNext();
-		} else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
-			e.preventDefault();
-			handlePrev();
-		}
-	}
-
-	function handleWheel(e: WheelEvent) {
-		const now = Date.now();
-		if (now - lastWheelTime < 300) return;
-		lastWheelTime = now;
-
-		if (e.deltaY > 0) {
-			handleNext();
-		} else if (e.deltaY < 0) {
-			handlePrev();
-		}
-	}
-
-	function handleTouchStart(e: TouchEvent) {
-		touchStartY = e.touches[0].clientY;
-	}
-
-	function handleTouchEnd(e: TouchEvent) {
-		const deltaY = touchStartY - e.changedTouches[0].clientY;
-		if (Math.abs(deltaY) < 50) return;
-
-		if (deltaY > 0) {
-			handleNext();
-		} else {
-			handlePrev();
+	// Prevent scrolling past the current question (free scroll on output)
+	function handleScroll() {
+		if (!scrollContainer || wizardStore.isOutputSlide) return;
+		const currentEl = scrollContainer.querySelector(`[data-step="${wizardStore.currentStep}"]`) as HTMLElement | null;
+		if (!currentEl) return;
+		const maxScroll = currentEl.offsetTop + currentEl.offsetHeight - scrollContainer.clientHeight;
+		if (scrollContainer.scrollTop > maxScroll) {
+			scrollContainer.scrollTop = maxScroll;
 		}
 	}
 
@@ -86,15 +66,8 @@
 	});
 </script>
 
-<svelte:window
-	onkeydown={handleKeyDown}
-/>
-
 <div
-	class="relative h-[100dvh] w-full overflow-hidden"
-	onwheel={handleWheel}
-	ontouchstart={handleTouchStart}
-	ontouchend={handleTouchEnd}
+	class="relative h-[100dvh] w-full"
 	role="application"
 >
 	<!-- Screen reader announcements -->
@@ -102,49 +75,51 @@
 		{announceText}
 	</div>
 
-	{#if showHero}
-		<HeroSlide onBegin={handleNext} />
-	{/if}
+	<div
+			class="scroll-container h-[100dvh] w-full overflow-y-auto"
+			bind:this={scrollContainer}
+			onscroll={handleScroll}
+		>
+			{#each visitedQuestions as q, i (q.id)}
+				{@const isCurrentStep = i + 1 === wizardStore.currentStep}
+				<div data-step={i + 1}>
+					<Slide
+						question={q}
+						value={wizardStore.answers[q.id] ?? (q.inputType === 'check' ? [] : q.inputType === 'range' ? (q.rangeMin ?? 1) : '')}
+						onAnswer={(v) => wizardStore.setAnswer(q.id, v)}
+						decorationVariant={i + 1}
+						showBack={i > 0}
+						showNext={isCurrentStep && !wizardStore.isOutputSlide}
+						nextLabel={wizardStore.isLastQuestion && isCurrentStep ? 'Generate' : 'Next'}
+						onBack={handlePrev}
+						onNext={handleNext}
+					/>
+				</div>
+			{/each}
 
-	{#if showQuestionSlide && wizardStore.currentQuestion}
-		{@const q = wizardStore.currentQuestion}
-		{#key q.id}
-			<Slide
-				question={q}
-				value={wizardStore.answers[q.id] ?? (q.inputType === 'check' ? [] : q.inputType === 'range' ? (q.rangeMin ?? 1) : '')}
-				onAnswer={(v) => wizardStore.setAnswer(q.id, v)}
-				direction={wizardStore.direction}
-				decorationVariant={wizardStore.currentStep}
-			/>
-		{/key}
-	{/if}
-
-	{#if showOutput}
-		<OutputSlide
-			answers={wizardStore.answers}
-			onReset={() => wizardStore.reset()}
-		/>
-	{/if}
-
-	{#if showNav}
-		<ProgressBar
-			progress={wizardStore.progress}
-			currentStep={wizardStore.currentStep}
-			totalSteps={wizardStore.totalSteps}
-		/>
-		<NavButtons
-			showBack={!wizardStore.isFirstStep}
-			showNext={true}
-			nextLabel={wizardStore.isLastQuestion ? 'Generate' : 'Next'}
-			onBack={handlePrev}
-			onNext={handleNext}
-		/>
-	{/if}
+			{#if showOutput}
+				<div data-step="output">
+					<OutputSlide
+						answers={wizardStore.answers}
+						onReset={() => wizardStore.reset()}
+					/>
+				</div>
+			{/if}
+		</div>
 
 	<CustomCursor />
 </div>
 
 <style>
+	.scroll-container {
+		scroll-behavior: auto;
+		scrollbar-width: none;
+	}
+
+	.scroll-container::-webkit-scrollbar {
+		display: none;
+	}
+
 	.sr-only {
 		position: absolute;
 		width: 1px;

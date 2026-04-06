@@ -24,6 +24,16 @@ function has(answers: Answers, key: string, value: string): boolean {
 	return arr(answers, key).includes(value);
 }
 
+// Derive appType from the split platform + appCategory questions
+function deriveAppType(answers: Answers): string {
+	const platform = str(answers, 'platform');
+	const category = str(answers, 'appCategory');
+	// If they picked a specific web category, use that
+	if (category && category !== 'general' && category !== 'other') return category;
+	// Otherwise fall back to platform
+	return platform || 'web';
+}
+
 function techStackForAppType(appType: string): {
 	frontend: string;
 	backend: string;
@@ -784,7 +794,7 @@ function integrationsSection(answers: Answers): string {
 }
 
 function seoSection(answers: Answers): string {
-	const appType = str(answers, 'appType');
+	const appType = deriveAppType(answers);
 
 	const lines: string[] = [
 		'## SEO & Discoverability',
@@ -982,7 +992,7 @@ function securitySection(answers: Answers): string {
 }
 
 function codeConventionsSection(answers: Answers): string {
-	const appType = str(answers, 'appType');
+	const appType = deriveAppType(answers);
 	const hasMobile = appType === 'mobile' || appType === 'both';
 
 	const lines: string[] = [
@@ -1052,7 +1062,7 @@ function codeConventionsSection(answers: Answers): string {
 }
 
 function deliverablesSection(answers: Answers): string {
-	const appType = str(answers, 'appType');
+	const appType = deriveAppType(answers);
 	const authMethod = str(answers, 'userAuth');
 	const features = arr(answers, 'coreFeatures');
 	const contentTypes = arr(answers, 'contentType');
@@ -1176,7 +1186,7 @@ export function generateBlueprint(answers: Answers): string {
 	const projectName = str(answers, 'projectName') || 'Untitled Project';
 	const appDescription = str(answers, 'appDescription') || '';
 	const targetAudience = str(answers, 'targetAudience') || '';
-	const appType = str(answers, 'appType') || 'web';
+	const appType = deriveAppType(answers) || 'web';
 	const timeline = str(answers, 'timeline') || 'standard';
 	const complexity = num(answers, 'complexity') || 3;
 	const scalability = num(answers, 'scalability') || 2;

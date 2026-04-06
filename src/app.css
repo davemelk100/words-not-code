@@ -34,6 +34,7 @@
 	/* Fonts */
 	--font-serif: 'Cormorant Garamond', Georgia, serif;
 	--font-sans: 'Instrument Sans', system-ui, sans-serif;
+	--font-heading: 'Roboto', system-ui, sans-serif;
 }
 
 *,

@@ -122,7 +122,7 @@
 		{:else}
 			<!-- Header -->
 			<div class="mb-8 text-center">
-				<h2 class="font-serif text-3xl text-gold-400 md:text-5xl">Your Blueprint</h2>
+				<h2 class="text-3xl font-light text-gold-400 md:text-5xl" style="font-family: var(--font-heading);">Your Blueprint</h2>
 				<p class="mt-2 text-cream-200">Copy and paste this into your favorite AI coding assistant.</p>
 			</div>
 
@@ -159,7 +159,7 @@
 
 			<!-- How to use it -->
 			<div class="mb-12">
-				<h3 class="mb-4 text-center font-serif text-2xl text-cream-50">How to use it</h3>
+				<h3 class="mb-4 text-center text-2xl font-light text-cream-50" style="font-family: var(--font-heading);">How to use it</h3>
 				<ol class="mx-auto max-w-lg space-y-3 text-cream-200">
 					<li class="flex items-start gap-3">
 						<span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold-400/20 text-sm font-semibold text-gold-400">1</span>
@@ -182,7 +182,7 @@
 
 			<!-- Destination cards -->
 			<div class="mb-16">
-				<h3 class="mb-6 text-center font-serif text-2xl text-cream-50">Where to paste it</h3>
+				<h3 class="mb-6 text-center text-2xl font-light text-cream-50" style="font-family: var(--font-heading);">Where to paste it</h3>
 				<div class="grid gap-4 sm:grid-cols-2">
 					{#each destinations as dest}
 						<div

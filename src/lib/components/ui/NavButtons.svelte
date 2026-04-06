@@ -17,7 +17,7 @@
 	} = $props();
 </script>
 
-<div class="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4">
+<div class="flex items-center justify-center gap-4 pt-8">
 	<div>
 		{#if showBack}
 			<button

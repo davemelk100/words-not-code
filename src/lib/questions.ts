@@ -1,34 +1,54 @@
 import type { Answers, Question } from './types';
 
 function isMobileRelevant(answers: Answers): boolean {
-	const appType = answers.appType;
-	if (typeof appType !== 'string') return false;
-	const lower = appType.toLowerCase();
+	const platform = answers.platform;
+	if (typeof platform !== 'string') return false;
+	const lower = platform.toLowerCase();
 	return lower === 'mobile' || lower === 'both';
+}
+
+function isWebRelevant(answers: Answers): boolean {
+	const platform = answers.platform;
+	if (typeof platform !== 'string') return false;
+	const lower = platform.toLowerCase();
+	return lower === 'web' || lower === 'both';
 }
 
 export const questions: Question[] = [
 	{
-		id: 'appType',
+		id: 'platform',
 		step: 1,
-		title: 'What are you building?',
+		title: 'Where will it live?',
+		subtitle: 'Pick where people will use your app.',
+		inputType: 'radio',
+		options: [
+			{ value: 'web', label: 'Website', description: 'Runs in a browser', icon: '🌐' },
+			{ value: 'mobile', label: 'Mobile App', description: 'Lives on your phone', icon: '📱' },
+			{ value: 'both', label: 'Both', description: 'Web + mobile', icon: '🔗' }
+		],
+		required: true,
+		gradient: ['#0f172a', '#1e3a5f']
+	},
+	{
+		id: 'appCategory',
+		step: 2,
+		title: 'What kind of site?',
 		subtitle: 'Pick the closest match — we\'ll figure out the details together.',
 		inputType: 'radio',
 		options: [
-			{ value: 'web', label: 'Website / Web App', description: 'Runs in a browser', icon: '🌐' },
-			{ value: 'mobile', label: 'Mobile App', description: 'Lives on your phone', icon: '📱' },
-			{ value: 'both', label: 'Both', description: 'Web + mobile', icon: '🔗' },
+			{ value: 'general', label: 'Custom Web App', description: 'Something unique — you\'ll describe it next', icon: '⚡' },
 			{ value: 'ecommerce', label: 'Online Store', description: 'Sell things online', icon: '🛒' },
 			{ value: 'blog', label: 'Blog / Content Site', description: 'Share writing, media or stories', icon: '📝' },
 			{ value: 'portfolio', label: 'Landing Page', description: 'Showcase work or capture leads', icon: '🖼️' },
 			{ value: 'other', label: 'Something Else', description: 'Tell us about it next', icon: '✨' }
 		],
 		required: true,
-		gradient: ['#0f172a', '#1e3a5f']
+		condition: isWebRelevant,
+		gradient: ['#0d1f3c', '#1a3355']
 	},
 	{
 		id: 'appDescription',
-		step: 2,
+		step: 3,
 		title: 'Describe your idea',
 		subtitle: 'No jargon needed — just explain it like you\'d tell a friend.',
 		inputType: 'text',
@@ -38,7 +58,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'targetAudience',
-		step: 3,
+		step: 4,
 		title: 'Who is this for?',
 		subtitle: 'Describe the people who\'ll use your app.',
 		inputType: 'text',
@@ -48,7 +68,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'mobilePlatform',
-		step: 4,
+		step: 5,
 		title: 'Which phones?',
 		subtitle: 'Not sure? "Both" is almost always the right call.',
 		inputType: 'radio',
@@ -63,7 +83,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'userAuth',
-		step: 5,
+		step: 6,
 		title: 'Will people need to log in?',
 		subtitle: 'We\'ll handle the security details for you.',
 		inputType: 'radio',
@@ -78,7 +98,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'coreFeatures',
-		step: 6,
+		step: 7,
 		title: 'What should your app do?',
 		subtitle: 'Tap all that apply — you can always add more later.',
 		inputType: 'check',
@@ -95,7 +115,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'payments',
-		step: 7,
+		step: 8,
 		title: 'Will you accept payments?',
 		subtitle: 'We\'ll set up Stripe so you can start earning.',
 		inputType: 'radio',
@@ -110,7 +130,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'designStyle',
-		step: 8,
+		step: 9,
 		title: 'What vibe are you going for?',
 		subtitle: 'Pick the look that feels right for your brand.',
 		inputType: 'radio',
@@ -126,7 +146,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'timeline',
-		step: 9,
+		step: 10,
 		title: 'When do you need it?',
 		subtitle: 'This helps us plan the right scope.',
 		inputType: 'radio',
@@ -141,7 +161,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'additionalNotes',
-		step: 10,
+		step: 11,
 		title: 'Anything else?',
 		subtitle: 'Apps you love, must-have features, or things you definitely don\'t want.',
 		inputType: 'text',
@@ -151,7 +171,7 @@ export const questions: Question[] = [
 	},
 	{
 		id: 'projectName',
-		step: 11,
+		step: 12,
 		title: 'What should we call it?',
 		subtitle: 'Pick a name — you can always change it later.',
 		inputType: 'text',
