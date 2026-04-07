@@ -34,10 +34,10 @@
 		<button
 			role="checkbox"
 			aria-checked={isSelected}
-			class="relative flex flex-col items-center rounded-xl p-5 border text-center transition-all duration-200 ease-in-out min-h-[44px] w-[calc(33.333%-1rem)] min-w-[140px] cursor-pointer
+			class="glass-card relative flex flex-col items-center rounded-xl p-5 border text-center transition-all duration-200 ease-in-out min-h-[44px] w-[calc(33.333%-1rem)] min-w-[140px] cursor-pointer
 				{isSelected
-				? 'border-transparent border-b-gold-400 bg-dark-700 shadow-[0_0_16px_rgba(226,180,64,0.15)]'
-				: 'border-dark-600 bg-dark-800'}
+				? 'border-white/20 shadow-[0_0_20px_rgba(226,180,64,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]'
+				: 'border-white/[0.08]'}
 				focus-visible:outline-2 focus-visible:outline-gold-400 focus-visible:outline-offset-2"
 			onclick={() => toggle(option.value)}
 			onkeydown={(e) => handleKeyDown(e, option.value)}
@@ -64,3 +64,17 @@
 		</button>
 	{/each}
 </div>
+
+<style>
+	.glass-card {
+		background: rgba(255, 255, 255, 0.04);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 24px rgba(0, 0, 0, 0.2);
+	}
+
+	.glass-card:hover {
+		background: rgba(255, 255, 255, 0.08);
+		border-color: rgba(255, 255, 255, 0.15);
+	}
+</style>
