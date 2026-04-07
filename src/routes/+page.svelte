@@ -5,6 +5,7 @@
 	<!-- Hero -->
 	<section class="hero">
 		<div class="hero-inner">
+			<img src="/wnc-logo.svg" alt="Words Not Code" class="hero-logo" />
 			<h1 class="hero-title" style="font-family: var(--font-heading);">
 				Words, Not Code
 			</h1>
@@ -81,6 +82,14 @@
 
 	.hero-inner {
 		max-width: 600px;
+	}
+
+	.hero-logo {
+		width: clamp(280px, 50vw, 450px);
+		height: auto;
+		margin: 0 auto 2rem;
+		display: block;
+		animation: fadeUp 0.8s ease both;
 	}
 
 	.hero-title {
