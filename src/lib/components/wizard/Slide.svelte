@@ -35,6 +35,9 @@
 	style="background: linear-gradient(135deg, {question.gradient[0]}, {question.gradient[1]});"
 >
 	<div class="relative z-10 mx-auto w-full max-w-3xl px-6 py-16 text-center">
+		<a href="/">
+			<img src="/wnc-logo.svg" alt="Words, Not Code" class="mx-auto mb-10 w-48 md:w-56" />
+		</a>
 		<h2
 			class="text-3xl font-light leading-tight text-gold-400 md:text-5xl"
 			style="font-family: var(--font-heading);"

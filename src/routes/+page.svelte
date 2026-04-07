@@ -5,9 +5,8 @@
 	<!-- Hero -->
 	<section class="hero">
 		<div class="hero-inner">
-			<img src="/wnc-logo.svg" alt="Words Not Code" class="hero-logo" />
-			<h1 class="hero-title" style="font-family: var(--font-heading);">
-				Words, Not Code
+			<h1>
+				<img src="/wnc-logo.svg" alt="Words, Not Code" class="hero-logo" />
 			</h1>
 			<h2 class="hero-sub">
 				Turn your app idea into a technical blueprint in minutes.
@@ -89,18 +88,6 @@
 		height: auto;
 		margin: 0 auto 2rem;
 		display: block;
-		animation: fadeUp 0.8s ease both;
-	}
-
-	.hero-title {
-		font-size: clamp(2.5rem, 8vw, 4.5rem);
-		font-weight: 300;
-		line-height: 1.1;
-		background: linear-gradient(135deg, var(--color-gold-400), var(--color-gold-200));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin: 0;
 		animation: fadeUp 0.8s ease both;
 	}
 
