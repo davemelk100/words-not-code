@@ -12,12 +12,16 @@
 	<meta property="og:title" content="Words Not Code — Turn your app idea into a technical blueprint" />
 	<meta property="og:description" content="Answer 17 simple questions about your app idea and get a complete technical spec you can paste into any AI coding assistant. Free, no sign-up required." />
 	<meta property="og:site_name" content="Words Not Code" />
-	<meta property="og:url" content="https://wordsnotcode.com" />
+	<meta property="og:url" content="https://words-not-code.netlify.app" />
+	<meta property="og:image" content="https://words-not-code.netlify.app/og-image.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Words Not Code — App Idea to Blueprint" />
 	<meta name="twitter:description" content="Answer simple questions. Get a complete technical spec. Paste it into any AI coding assistant and start building." />
+	<meta name="twitter:image" content="https://words-not-code.netlify.app/og-image.png" />
 
 	<!-- JSON-LD Structured Data: WebApplication -->
 	{@html `<script type="application/ld+json">${JSON.stringify({
@@ -25,7 +29,8 @@
 		"@type": "WebApplication",
 		"name": "Words Not Code",
 		"description": "Turn your app idea into a technical blueprint by answering simple questions. Get a complete spec you can paste into any AI coding assistant.",
-		"url": "https://wordsnotcode.com",
+		"url": "https://words-not-code.netlify.app",
+		"image": "https://words-not-code.netlify.app/og-image.png",
 		"applicationCategory": "DeveloperApplication",
 		"operatingSystem": "Any",
 		"offers": {
