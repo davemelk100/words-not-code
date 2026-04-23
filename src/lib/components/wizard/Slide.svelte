@@ -34,7 +34,7 @@
 	class="relative flex min-h-[100dvh] w-full flex-col items-center justify-center"
 	style="background: linear-gradient(135deg, {question.gradient[0]}, {question.gradient[1]});"
 >
-	<div class="relative z-10 mx-auto w-full max-w-3xl px-6 py-16 text-center">
+	<div class="relative z-10 mx-auto w-full max-w-3xl px-3 py-16 text-center md:px-6">
 		<a href="/">
 			<img src="/wnc-logo.svg" alt="Words, Not Code" class="mx-auto mb-10 w-48 md:w-56" />
 		</a>

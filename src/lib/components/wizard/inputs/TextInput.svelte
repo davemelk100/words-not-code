@@ -12,9 +12,14 @@
 	} = $props();
 
 	let textareaEl: HTMLTextAreaElement | undefined = $state();
+	let localValue = $state(value);
 	let hasSpeechApi = $state(false);
 	let isListening = $state(false);
 	let recognition: any = $state(null);
+
+	$effect(() => {
+		localValue = value;
+	});
 
 	$effect(() => {
 		if (typeof window !== 'undefined') {
@@ -23,18 +28,22 @@
 	});
 
 	$effect(() => {
+		localValue;
 		autoResize();
 	});
 
 	function autoResize() {
 		if (!textareaEl) return;
+		if (!localValue) {
+			textareaEl.style.height = 'auto';
+			return;
+		}
 		textareaEl.style.height = 'auto';
 		textareaEl.style.height = textareaEl.scrollHeight + 'px';
 	}
 
-	function handleInput(e: Event) {
-		const target = e.target as HTMLTextAreaElement;
-		onChange(target.value);
+	function handleInput() {
+		onChange(localValue);
 	}
 
 	function toggleVoice() {
@@ -80,19 +89,19 @@
 </script>
 
 <div class="w-full">
-	<div class="relative flex items-end min-h-[120px]">
+	<div class="relative flex flex-col justify-end min-h-[120px]">
 		<textarea
 			bind:this={textareaEl}
+			bind:value={localValue}
 			{placeholder}
-			{value}
 			oninput={handleInput}
 			rows="1"
 			class="w-full bg-transparent border-0 border-b-2 border-dark-600
 				text-xl md:text-2xl text-cream-50 placeholder-cream-300/50
-				pt-0 pb-3 pr-12 resize-none outline-none!
+				pt-0 pb-3 pr-12 resize-none outline-none! cursor-text
 				transition-colors duration-200
 				focus:border-gold-400
-				self-end"
+				mt-auto"
 		></textarea>
 
 		{#if hasSpeechApi}
@@ -112,9 +121,9 @@
 		{/if}
 	</div>
 
-	{#if value}
+	{#if localValue}
 		<div class="text-cream-300/60 text-xs mt-2 text-right">
-			{value.length} character{value.length !== 1 ? 's' : ''}
+			{localValue.length} character{localValue.length !== 1 ? 's' : ''}
 		</div>
 	{/if}
 </div>

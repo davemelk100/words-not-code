@@ -10,6 +10,7 @@
 	xmlns="http://www.w3.org/2000/svg"
 	class="animated-checkmark"
 >
+
 	<circle
 		cx="16"
 		cy="16"
