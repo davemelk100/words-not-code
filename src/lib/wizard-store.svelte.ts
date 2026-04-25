@@ -74,5 +74,11 @@ export const wizardStore = {
 		answers = {};
 		currentStep = 1;
 		direction = 1;
+	},
+
+	loadState(savedAnswers: Answers, step: number) {
+		answers = { ...savedAnswers };
+		currentStep = Math.max(1, step);
+		direction = 1;
 	}
 };

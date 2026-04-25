@@ -16,7 +16,8 @@
 		showNext = true,
 		nextLabel = 'Next',
 		onBack,
-		onNext
+		onNext,
+		onSave
 	}: {
 		question: Question;
 		value: string | string[] | number;
@@ -27,6 +28,7 @@
 		nextLabel?: string;
 		onBack?: () => void;
 		onNext?: () => void;
+		onSave?: () => void;
 	} = $props();
 </script>
 
@@ -92,6 +94,18 @@
 			{onBack}
 			{onNext}
 		/>
+
+		{#if onSave}
+			<div class="mt-4">
+				<button
+					type="button"
+					onclick={onSave}
+					class="text-xs text-white/40 underline decoration-white/20 transition-colors hover:text-white/70 hover:decoration-white/40"
+				>
+					Save progress for later
+				</button>
+			</div>
+		{/if}
 	</div>
 
 	<SlideDecoration variant={decorationVariant} />

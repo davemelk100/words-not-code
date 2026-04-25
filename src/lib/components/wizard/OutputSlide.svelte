@@ -8,10 +8,12 @@
 
 	let {
 		answers,
-		onReset
+		onReset,
+		onSave
 	}: {
 		answers: Answers;
 		onReset: () => void;
+		onSave?: () => void;
 	} = $props();
 
 	let blueprint = $state('');
@@ -146,6 +148,16 @@
 						<span>Copy to Clipboard</span>
 					{/if}
 				</button>
+
+				{#if onSave}
+					<button
+						type="button"
+						onclick={onSave}
+						class="flex items-center gap-2 rounded-lg border border-cream-300/30 px-6 py-3 text-cream-300 transition-colors hover:border-cream-300/60 hover:text-cream-100"
+					>
+						<span>Save Link</span>
+					</button>
+				{/if}
 
 				<button
 					type="button"

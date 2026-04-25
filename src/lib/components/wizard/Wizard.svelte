@@ -4,9 +4,37 @@
 	import Slide from './Slide.svelte';
 	import OutputSlide from './OutputSlide.svelte';
 	import CustomCursor from '$lib/components/ui/CustomCursor.svelte';
+	import SaveProgressModal from '$lib/components/ui/SaveProgressModal.svelte';
 
 	let announceText = $state('');
 	let scrollContainer: HTMLDivElement | undefined = $state();
+	let saveLink = $state('');
+	let showSaveModal = $state(false);
+	let saving = $state(false);
+
+	async function handleSave() {
+		if (saving) return;
+		saving = true;
+		try {
+			const res = await fetch('/api/save-progress', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					answers: wizardStore.answers,
+					currentStep: wizardStore.currentStep
+				})
+			});
+			const data = await res.json();
+			if (res.ok) {
+				saveLink = `${window.location.origin}/wizard?s=${data.id}`;
+				showSaveModal = true;
+			}
+		} catch {
+			// Silently fail — the button is unobtrusive
+		} finally {
+			saving = false;
+		}
+	}
 
 	let showOutput = $derived(wizardStore.isOutputSlide);
 
@@ -93,6 +121,7 @@
 						nextLabel={wizardStore.isLastQuestion && isCurrentStep ? 'Generate' : 'Next'}
 						onBack={handlePrev}
 						onNext={handleNext}
+						onSave={isCurrentStep ? handleSave : undefined}
 					/>
 				</div>
 			{/each}
@@ -102,10 +131,18 @@
 					<OutputSlide
 						answers={wizardStore.answers}
 						onReset={() => wizardStore.reset()}
+						onSave={handleSave}
 					/>
 				</div>
 			{/if}
 		</div>
+
+	{#if showSaveModal}
+		<SaveProgressModal
+			link={saveLink}
+			onClose={() => { showSaveModal = false; }}
+		/>
+	{/if}
 
 	<CustomCursor />
 </div>
