@@ -31,12 +31,12 @@
 </script>
 
 <div
-	class="relative flex min-h-[100dvh] w-full flex-col items-center justify-center"
+	class="relative flex min-h-[100dvh] w-full flex-col items-center justify-start md:justify-center"
 	style="background: linear-gradient(135deg, {question.gradient[0]}, {question.gradient[1]});"
 >
-	<div class="relative z-10 mx-auto w-full max-w-3xl px-3 py-16 text-center md:px-6">
+	<div class="relative z-10 mx-auto w-full max-w-3xl px-3 py-6 text-center md:px-6 md:py-16">
 		<a href="/">
-			<img src="/wnc-logo.svg" alt="Words, Not Code" class="mx-auto mb-10 w-48 md:w-56" />
+			<img src="/wnc-logo.svg" alt="Words, Not Code" class="mx-auto mb-4 w-32 md:mb-10 md:w-56" />
 		</a>
 		<h2
 			class="text-3xl font-light leading-tight text-gold-400 md:text-5xl"
